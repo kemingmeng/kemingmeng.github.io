@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Computing Map and Computation Paths | 15-455 Project Writeup</title>
+<meta content="15-455 Project Writeup by Keming Meng, adapted for GitHub Pages." name="description"/>
+<link href="styles.css" rel="stylesheet"/>
+<script>window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']], processEscapes: true },
+  chtml: { scale: 1.01, displayAlign: 'center' },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};</script><script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script></head>
+<body>
+<header class="site-header">
+<div class="header-inner">
+<h1 class="site-title">15-455 Project Writeup</h1>
+<p class="site-subtitle">Keming Meng · November 2026</p>
+</div>
+</header>
+<main class="layout">
+<aside class="sidebar">
+<h2>Sections</h2>
+<ul class="toc">
+<li><a class="" href="index.html">Introduction</a></li>
+<li><a class="" href="bss-machines.html">Blum-Shub-Smale Machines, and a model of computation over the real numbers</a></li>
+<li><a class="active" href="computing-map.html">Computing Map and Computation Paths</a></li>
+<li><a class="" href="uniform-bss-machine.html">Uniform BSS machine</a></li>
+<li><a class="" href="complexity-classes.html">The complexity classes \(P_{\mathbb R}\) and \(NP_{\mathbb R}\) and reductions</a></li>
+<li><a class="" href="register-equations.html">Register Equations</a></li>
+<li><a class="" href="np-complete-language.html">An \(NP_{\mathbb R}\) Complete Language</a></li>
+<li><a class="" href="conclusion.html">Conclusion and Acknowledgements</a></li>
+</ul>
+<div class="extras">
+<p><a href="15_455_Project_Writeup-5.pdf">View the original PDF</a></p>
+<p class="small">This site version preserves the writeup text and adds navigation between sections. The BSS machine diagram was added where the writeup says an example is given.</p>
+</div>
+</aside>
+<section class="content">
+<article class="card">
+<div class="kicker">Section 2</div>
+<h2 class="page-title">Computing Map and Computation Paths</h2>
+<div class="meta">Keming Meng · 15-455 Project Writeup</div>
+<p>We would now like to define some functions and sets that are useful in understanding decidability, and analyzing the behavior of these machines.</p>
+<p><span class="label">Definition 3.</span> First, given a finite-dimensional BSS machine, with state space \(S\), input space \(I\), and output space \(O\) and \(N\) nodes, for any node \(n\) let \(\beta_n\) be its unique next node if \(n\) is not a branch node, and let \(g_n\) be the next state that is achieved after running the node. For branch nodes, we let \(\beta_n^{+}\) be the next node if the function associated with the branch node is ≥ 0, and \(\beta^{-}\) be the other next node otherwise. We define the computing map to be \(C:[N]\times S\to [N]\times S\) where for a computation node \(n\), \(C(n,s)\) = (\(\beta_n\), \(g_n(x)\)), for a branch node, \(C(n,s)\) = (\(\beta_n^{+}\), s) if \(h_n(x)\) ≥ 0, and (\(\beta_n^{-}\), s) otherwise, for the input node \(C(1,s)\) = (\(\beta_1\), s), and for the output node \(C(N,s)\) = (\(N\), s).</p>
+<p>Using this, we can give a definition for halting.</p>
+<p><span class="label">Definition 4.</span> Fix a finite dimensional BSS machine with input space \(I\), state space \(S\), and output space \(O\). Let \(L\) be the linear map associated with our input node. We say that a finite-dimensional BSS machine \(M\) halts on \(x\) if \(C(1,L(x))^n\) = (\(N\), \(y\)) for some \(y\) ∈ \(S\). We define the minimum halting time for \(x\) to be the least \(n\) such that \(C(1,L(x))^n\) = (\(N\), \(y\)) for some \(y\) ∈ \(S\).</p>
+<p>This gives a natural definition for the runtime of an input, by simply using the minimum halting time of that input, if such a halting time exists.</p>
+<p><span class="label">Definition 5.</span> Fix a finite-dimensional BSS machine \(M\) with input space \(I\), state space \(S\), and output space \(O\). We define</p>
+<div class="formula math-display">\[\begin{aligned} \Omega_M &amp;= \{x\in I : M\text{ halts on }x\}\\[5pt] \Omega_{M,T} &amp;= \{x\in I : M\text{ halts on }x\text{ in }T\text{ steps}\}. \end{aligned}\]</div>
+<p>Using this, we can define a function \(\phi_M:\Omega_M\to O\), which sends \(x\in\Omega_M\) to its output after running \(M\) on \(x\). This map is called the input-output map.</p>
+<p><span class="label">Definition 6.</span> We define a decider for a set \(E\subseteq I\) to be a finite-dimensional BSS machine \(M\) such that for all \(x\in I\), \(M\) halts on \(x\), and \(\phi_M\) is equal to the characteristic function of E. In other words, \(\phi_M(x)\) = 1 if \(x\in E\), and 0 otherwise.</p>
+<p>Now, in pursuit of better understanding decidability, we look at characterizing some mathematical property of the halting sets.</p>
+<p>If we think about the computation path across the nodes that an input takes, we can characterize which other inputs will follow the same path.</p>
+<p>In particular, fix some \(x\in I\), and consider \(\gamma_x(k)\) to be the first \(k\) + 1 nodes that \(x\) visits in its computation path, including the input node, in other words the first \(k\) steps in \(x\)’s computation path. Then, define \(G_{\gamma_x(k)}:I\to S\) to be the map sending \(y\) to the value in the state space that is obtained after running the \(k\) steps in \(x\)’s computation on \(y\).</p>
+<p>Now, note that for any two inputs \(x\), \(y\in I\), the only way in which the first \(k\) steps in the computation paths of \(x\) and \(y\) differ is if \(x\) and \(y\) differ at some branching node that happens before the kth step. In particular, this means that for some \(k\prime\) &lt; \(k\) which we let be the first branching node in which \(x\), \(y\) differ, since without loss of generality we can take our branching function to check the first coordinate, we have that either the first coordinate of \(G_{\gamma_x(k\prime)}(y)\) &lt; 0 and \(G_{\gamma_x(k\prime)}(y)\) ≥ 0 or vice versa. Since clearly \(G_{\gamma_x(k\prime)}\) is a composition of rational functions, it is itself rational.</p>
+<p>In particular, this tells us that if at every branching node along the path of some input \(x\in I\) we have that another input \(y\) agrees, then the two inputs have the same computation path.</p>
+<p>This gives us a way of formally defining a branching function at step \(k\) for an input \(x\). In particular, the step \(k\) branching function for \(x\) is given by</p>
+<div class="formula math-display">\[f_{\gamma_x(k)}=\pi_1 G_{\gamma_x(k)}\]</div>
+<p>as this is the value that is checked when deciding where the input \(x\) goes to in the branching process (\(\pi_1\) simply maps a vector to its first coordinate).</p>
+<p>Let now \(R_{\gamma_x(k)}\) = {\(f_{\gamma_x(k\prime)}\) : \(k\prime\) &lt; \(k\) ∧ \(f_{\gamma_x(k\prime)}(x)\) ≥ 0} and \(L_{\gamma_x(k)}\) = {\(f_{\gamma_x(k\prime)}\) : \(k\prime\) &lt; \(k\) ∧ \(f_{\gamma_x(k\prime)}(x)\) &lt; 0}</p>
+<p>Using this, we define the set of inputs that match the computation path of \(x\) for the first \(k\) steps to be</p>
+<div class="formula math-display">\[\begin{aligned}P_{\gamma_x(k)}&amp;=\{y\in I:\gamma_x(k)=\gamma_y(k)\}\\&amp;=\{y\in I:f(y)\ge0\ \wedge\ g(y)&lt;0\ \forall f\in R_{\gamma_x(k)},\ g\in L_{\gamma_x(k)}\}\end{aligned}\]</div>
+<p>The proof of the above fact follows directly from the preceding analysis.</p>
+<p>The following definition helps us work towards characterizing halting sets.</p>
+<p><span class="label">Definition 7.</span> We say \(E\subseteq\mathbb R^n\) is a basic semi-algebraic set iff E is the set of \(x\) ∈ \(\mathbb R^{n}\) that satisfy a finite number of polynomial equations and inequalities in the coordinates of \(x\). We then define E to be a semi-algebraic set iff E is the finite union of basic semi-algebraic sets. (This definition is adapted/quoted/paraphrased from the book ”Complexity and Real Computation” which is referenced in the acknowledgments.)</p>
+<p>In particular, we can note that \(P_{\gamma_x(k)}\) is a basic semi-algebraic set for any \(x\) and \(k\). To see why, note that if \(y\in P_{\gamma_x(k)}\), then \(y\) satisfies a system of rational function inequalities. It suffices to show that we can turn each of these rational inequalities into polynomial inequalities. To do so, note that \(p(x)q(x)\) has the same sign as \(\frac{p(x)}{q(x)}\), meaning for each of these inequalities, we can turn it into a polynomial inequality. To ensure \(q(x)\ne 0\), we can simply enforce this as an extra condition.</p>
+<p>Moreover, note that if \(y\notin P_{\gamma_x(k)}\), then \(P_{\gamma_y(k)}\) is disjoint. This is clear, since if an element is in \(P_{\gamma_x(k)}\), it has the same computation path as \(x\) for the first \(k\) steps, which implies that it cannot have the same path as \(y\) for the first \(k\) steps, and vice versa.</p>
+<p>We now let \(\Gamma_T\) denote the paths that halt in \(T\) time. Then, all the halting paths for the finite-dimensional BSS machine \(M\) are given by \(\Gamma_M=\bigcup_{n=1}^{\infty}\Gamma_T\). Then, finally, we know that the halting set is given by</p>
+<div class="formula math-display">\[\Omega_M=\bigcup_{\gamma\in\Gamma_M}P_\gamma\]</div>
+<p>which is then a countable union of semi-algebraic sets, as each \(P_\gamma\) is a semi-algebraic set.</p>
+<p>Thus, we know that the halting set of any BSS machine must be a countable union of semi-algebraic sets. This ultimately leads us to the following theorem:</p>
+<p><span class="label">Theorem 1.</span> The Mandelbrot set is undecidable (we can view the Mandelbrot set as a subset of \(\mathbb R^{2}\)).</p>
+<p>The proof is outside the scope of the course, but the idea is to show that the Mandelbrot set is not a countable union of semi-algebraic sets. To do so, the proof requires analysis on the Hausdorff dimension of the boundary of the set.</p>
+<p>Once we know that the Mandelbrot set is not a countable union of semi-algebraic sets, we can then conclude it is not a halting set of any BSS machine. This means that the Mandelbrot set is then undecidable, since all decidable sets are also halting sets of some BSS machine. To see why, simply create a BSS machine \(M\) that acts similar to the decider, but when it reaches the reject conclusion, it simply loops.</p>
+<nav class="nav-links">
+<a href="bss-machines.html"><span>Previous section</span>Blum-Shub-Smale Machines, and a model of computation over the real numbers</a>
+<a href="uniform-bss-machine.html"><span>Next section</span>Uniform BSS machine</a>
+</nav>
+</article>
+</section>
+</main>
+<footer class="site-footer">
+<p>Prepared as static HTML files for GitHub Pages.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>An NPR Complete Language | 15-455 Project Writeup</title>
+  <meta name="description" content="15-455 Project Writeup by Keming Meng, adapted for GitHub Pages.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="site-title">15-455 Project Writeup</h1>
+      <p class="site-subtitle">Keming Meng · November 2026</p>
+    </div>
+  </header>
+  <main class="layout">
+    <aside class="sidebar">
+      <h2>Sections</h2>
+      <ul class="toc">
+        <li><a class='' href='index.html'>Introduction</a></li>
+<li><a class='' href='bss-machines.html'>Blum-Shub-Smale Machines, and a model of computation over the real numbers</a></li>
+<li><a class='' href='computing-map.html'>Computing Map and Computation Paths</a></li>
+<li><a class='' href='uniform-bss-machine.html'>Uniform BSS machine</a></li>
+<li><a class='' href='complexity-classes.html'>The complexity classes PR and NPR and reductions</a></li>
+<li><a class='' href='register-equations.html'>Register Equations</a></li>
+<li><a class='active' href='np-complete-language.html'>An NPR Complete Language</a></li>
+<li><a class='' href='conclusion.html'>Conclusion and Acknowledgements</a></li>
+      </ul>
+      <div class="extras">
+        <p><a href="15_455_Project_Writeup-5.pdf">View the original PDF</a></p>
+        <p class="small">This site version preserves the writeup text and adds navigation between sections. The BSS machine diagram was added where the writeup says an example is given.</p>
+      </div>
+    </aside>
+    <section class="content">
+      <article class="card">
+        <div class="kicker">Section 6</div>
+        <h2 class="page-title">An NPR Complete Language</h2>
+        <div class="meta">Keming Meng · 15-455 Project Writeup</div>
+        <p>We are now ready to present an NPR complete language for our BSS machines.</p>
+<p>First, define</p>
+<div class='formula'><pre>R[x1, . . . , xn]</pre></div>
+<p>to be the real polynomials with the variables x1, . . . , xn.</p>
+<p><span class='label'>Definition 11.</span> The language semi-algebraic feasibility, called</p>
+<div class='formula'><pre>SA − FEAS = {(ϕ1, . . . , ϕn) : ϕj = (fj1, . . . , fjm, gj1, . . . , gjk), fji, gjℓ ∈ R[x1, . . . , xp]}</pre></div>
+<p>where there is some x such that</p>
+<div class='formula'><pre>ϕ(x) = fj1 &gt; 0 ∨ . . . ∨ fjm &gt; 0 ∨ gj1 = 0 ∨ . . . ∨ gjk = 0</pre></div>
+<p>is true for each 1 ≤ j ≤ n. (This definition is adapted/quoted/paraphrased from the book ”Complexity and Real Computation” which referenced in the acknowledgments.)</p>
+<p><span class='label'>Remark 3.</span> One might wonder how we encode instances of SA − FEAS. The primary worry is in encoding the polynomials. To do so, we can first note that for any given polynomial with a certain degree over a certain number of variables, we can impart a total order on the monomials. Using such a total order, we can then for each polynomial give its degree, the number of variables it has, and the coefficients on its monomials one by one.</p>
+<p><span class='label'>Remark 4.</span> The semi-algebraic system obtained from the register equations in the previous section can be turned into the form of input for SA − FEAS in polynomial time.</p>
+<p>Now, we claim that SA − FEAS is a an NPR complete language.</p>
+<p>The fact that SA − FEAS is in NP is clear by the fact that as a proof string, we can simply provide a value of x that witnesses each of the φj being satisfied.</p>
+<p>We now prove the main theorem that remains.</p>
+<p><span class='label'>Theorem 2.</span> SA − FEAS is NPR hard.</p>
+<p><span class='label'>Proof.</span> To show the above, we reduce any NPR problem to SA − FEAS via a mapping reduction. First, fix a language L ∈ NPR. We know then that x ∈ L iff there is a polynomial-time verifier V, and a polynomial p such that there is some y with |y| ≤ p(|x|), such that V (x, y) accepts. Let T = q(|x|) bound the time complexity of V. Now, consider the time-q(|x|) register equations for V with input (x, y) and output 1, with x fixed from before. Using the main result of the previous section, these register equations can be reduced to a semi-algebraic system with polynomial size in |x|, since the time is polynomial in |x|, the size of y is at most polynomial in |x|, and the degree of the polynomials in the semi-algebraic system is constant. Call this semi-algebraic system ϕT (x, y, z). Then, note that the map sending x → ϕT (x, y, z) with the value of x plugged in and with ϕT (x, y, z) in the form of SA − FEAS is polynomial time computable as we discussed previously, and is a mapping reduction reducing L to SA − FEAS, as x ∈ L iff there is some y within the polynomial bounds such that the register equations are satisfied in time T, which occurs iff ϕT (x, y, z) is feasible, and so we are done.</p>
+        <nav class="nav-links">
+          <a href='register-equations.html'><span>Previous section</span>Register Equations</a>
+          <a href='conclusion.html'><span>Next section</span>Conclusion and Acknowledgements</a>
+        </nav>
+      </article>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p>Prepared as static HTML files for GitHub Pages.</p>
+  </footer>
+</body>
+</html>

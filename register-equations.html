@@ -67,9 +67,9 @@
 <p>To fix the equations with \(\hat\beta\), we can decompose \(\hat\beta\). To do so, let \(\beta^{+}\), \(\beta^{-}\) be equal to \(\beta\) for non branching-nodes, and then equal to the appropriate branch-node when computing at the branch node. Then, we can define</p>
 <div class="formula math-display">\[\hat\beta^{\pm}(\alpha,x)=\sum_{i=1}^{N}\alpha_i e_{\beta^{\pm}(i,x)}\]</div>
 <p>and this allows for us to obtain a semi-algebraic system, by turning</p>
-<div class="formula math-display">\[\alpha_k=\beta(\alpha_{k-1},x^{k-1})\]</div>
+<div class="formula math-display">\[\alpha^k=\beta(\alpha^{k-1},x^{k-1})\]</div>
 <p>into</p>
-<div class="formula math-display">\[\bigl(\alpha_k=\hat\beta^{-}(\alpha_{k-1},x^{k-1})\ \wedge\ (x^{k-1})_1&lt;0\bigr)\ \vee\ \bigl(\alpha_k=\hat\beta^{+}(\alpha_{k-1},x^{k-1})\ \wedge\ (x^{k-1})_1\ge0\bigr)\]</div>
+<div class="formula math-display">\[\bigl(\alpha^k=\hat\beta^{-}(\alpha^{k-1},x^{k-1})\ \wedge\ (x^{k-1})_1&lt;0\bigr)\ \vee\ \bigl(\alpha^k=\hat\beta^{+}(\alpha^{k-1},x^{k-1})\ \wedge\ (x^{k-1})_1\ge0\bigr)\]</div>
 <p>for all \(k\le T,\ k\ge1\).</p>
 <p>This now is a semi-algebraic system, as everything is now either a polynomial inequality or equality.</p>
 <p>We now provide some bounds on the number of equations and inequalities we have, the degrees of the polynomials in the equations, and the number of variables.</p>
